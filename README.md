@@ -76,7 +76,7 @@ console.log(store.getState());
 
 
 ## Adding Subscriptionのセッティング
--
+
 ```js
 
 const redux = require('redux');
@@ -159,5 +159,60 @@ const reducer = (state = initialState, action) => {
 }
 
 
-export default reduer;
+export default reducer;
+```
+
+## npmでreduxをインストール
+- `npm install --save react-redux`
+```js
+//index.jsにインポート
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { createStore } from 'redux';
+//1
+import { Provider } from 'react-redux';
+import reducer from './store/reducer';
+
+import './index.css';
+import App from './App';
+import registerServiceWorker from './registerServiceWorker';
+
+const store = createStore(reducer);
+
+//2 <Provider store={store}>//ここをラップする</Provider>,
+ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
+registerServiceWorker();
+
+```
+
+- counter.jsを編集
+```js
+//1 まずはインポート
+import { connect }from 'react-redux';
+
+
+//省略
+return (
+    <div>
+    //4
+        <CounterOutput value={this.props.ctr} />
+        <CounterControl label="Increment" clicked={() => this.counterChangedHandler( 'inc' )} />
+        <CounterControl label="Decrement" clicked={() => this.counterChangedHandler( 'dec' )}  />
+        <CounterControl label="Add 5" clicked={() => this.counterChangedHandler( 'add', 5 )}  />
+        <CounterControl label="Subtract 5" clicked={() => this.counterChangedHandler( 'sub', 5 )}  />
+    </div>
+  );
+  }
+}
+
+//3 
+const mapStateToProps = state => {
+  return {
+    ctr: state.counter
+  };
+};
+
+//2 heigh order componentでラッピング
+export default connect(mapStateToProps)(Counter);
 ```
