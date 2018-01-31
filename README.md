@@ -206,7 +206,7 @@ return (
   }
 }
 
-//3 
+//3
 const mapStateToProps = state => {
   return {
     ctr: state.counter
@@ -216,3 +216,52 @@ const mapStateToProps = state => {
 //2 heigh order componentでラッピング
 export default connect(mapStateToProps)(Counter);
 ```
+- `npm start`でビルドしてみると、今現状はボタンを押しても動きはない。この後その設定等をやる
+
+
+## dispatchを設定
+- 現状だとdispatchを設定していないのでボタンを押しても何も反応しない
+```js
+
+
+render () {
+    return (
+        <div>
+            <CounterOutput value={this.props.ctr} />
+            //3 ここで[mapDispatchToProps]で設定した関数を実行させることでreducderが走る
+            <CounterControl label="Increment" clicked={this.props.onIncrementCounter} />
+//省略
+
+//1 dispatchを設定
+const mapDispatchToProps = dispatch => {
+  return {
+    //関数として実行される
+    onIncrementCounter: () => dispatch({type: 'INCREMENT'})
+  };
+};
+
+//2 connectする
+export default connect(mapStateToProps, mapDispatchToProps)(Counter);
+
+
+// reducer.js
+
+const initialState = {
+  counter: 0
+}
+
+const reducer = (state = initialState, action) => {
+  //4 ここでdispatchで設定したtypeのINCREMENTが呼ばれるとreturnでstateの状態が変化する
+  if(action.type === 'INCREMENT'){
+    return {
+      counter: state.counter + 1
+    }
+  }
+  return state;
+}
+
+
+export default reducer;
+
+```
+- この処理でincrementの部分を押すとカウントアップされて状態が更新される
