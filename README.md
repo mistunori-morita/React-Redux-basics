@@ -265,3 +265,34 @@ export default reducer;
 
 ```
 - この処理でincrementの部分を押すとカウントアップされて状態が更新される
+
+```js
+
+//残りのクリックイベントをdispatchで管理する方法
+render () {
+    return (
+        <div>
+        //2 各イベントと紐づける
+            <CounterOutput value={this.props.ctr} />
+            <CounterControl label="Increment" clicked={this.props.onIncrementCounter} />
+            <CounterControl label="Decrement" clicked={this.props.onDecrementCounter}  />
+            <CounterControl label="Add 5" clicked={this.props.onAddCounter}  />
+            <CounterControl label="Subtract 5" clicked={this.props.onSubtractCounter}  />
+        </div>
+    );
+}
+}
+
+//省略
+const mapDispatchToProps = dispatch => {
+  return {
+  //1 各関数を記述して、それをclicked={ここに記述する}
+  onIncrementCounter: () => dispatch({type: 'INCREMENT'}),
+  onDecrementCounter: () => dispatch({type: 'DECREMENT'}),
+  onAddCounter: () => dispatch({type: 'ADD'}),
+  onSubtractCounter: () => dispatch({type: 'SUBTRACT'})
+  };
+};
+
+//これでイベントが設定できる
+```
