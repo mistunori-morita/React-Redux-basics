@@ -298,7 +298,7 @@ const mapDispatchToProps = dispatch => {
 ```
 
 ## actionによる値の受け渡し
-```
+```js
 const mapDispatchToProps = dispatch => {
   return {
     //関数として実行される
@@ -330,30 +330,30 @@ return state;
 ```
 
 
-"" switchによるreducerの書き方
+## switchによるreducerの書き方
 ```js
 //こうやって書くこともできる
 switch (action.type) {
-  case 'INCREMENT':
-    return {
-      counter: state.counter + 1
+    case 'INCREMENT':
+      return {
+        counter: state.counter + 1
+      }
+    case 'DECREMENT':
+      return {
+        counter: state.counter - 1
+      }
+    case 'ADD':
+      return {
+        counter: state.counter + action.val
+      }
+    case 'SUBTRACT':
+      return {
+        counter: state.counter - action.val
     }
-  case 'DECREMENT':
-    return {
-      counter: state.counter - 1
-    }
-  case 'ADD':
-    return {
-      counter: state.counter + action.val
-    }
-  case 'SUBTRACT':
-    return {
-      counter: state.counter - action.val
-  }
-  default:
+    default:
 
-}
-return state;
+    }
+  return state;
 };
 
 ```
