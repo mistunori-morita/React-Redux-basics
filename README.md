@@ -73,3 +73,91 @@ console.log(store.getState());
 //Subscription
 
 ```
+
+
+## Adding Subscriptionのセッティング
+-
+```js
+
+const redux = require('redux');
+const createStore = redux.createStore;
+
+const initialState = {
+  counter: 0
+}
+
+// Reducer
+const rootReducer = (state = initialState, action) => {
+  if(action.type === 'INC_COUNTER'){
+    return {
+      ...state,
+      counter: state.counter + 1
+    };
+  }
+  if(action.type === 'ADD_COUNTER'){
+    return {
+      ...state,
+      counter: state.counter + action.value
+    };
+  }
+
+  return state;
+};
+
+// Store
+const store = createStore(rootReducer);
+console.log(store.getState());
+
+
+
+//Subscription subscribeメソッドdispatchする前に行われることに注意！
+store.subscribe(() => {
+  console.log('[Subscription]', store.getState());
+});
+
+
+//Dispatching Action
+store.dispatch({type: 'INC_COUNTER'});
+store.dispatch({type: 'ADD_COUNTER', value: 10});
+console.log(store.getState());
+
+```
+
+
+# Connecting React to Redux
+- 先ほどの基本的なやり方をベースにReactと紐づけていく
+- index.jsを編集
+```js
+import React from 'react';
+import ReactDOM from 'react-dom';
+//1
+import { createStore } from 'redux';
+
+//3
+import reducer from './store/reducer';
+
+import './index.css';
+import App from './App';
+import registerServiceWorker from './registerServiceWorker';
+
+//2
+const store = createStore(reducer);
+
+ReactDOM.render(<App />, document.getElementById('root'));
+registerServiceWorker();
+
+```
+- src/storeを作成,storeの中にreduer.jsを作成する
+```js
+
+const initialState = {
+  counter: 0
+}
+
+const reducer = (state = initialState, action) => {
+  return state;
+}
+
+
+export default reduer;
+```
