@@ -296,3 +296,64 @@ const mapDispatchToProps = dispatch => {
 
 //これでイベントが設定できる
 ```
+
+## actionによる値の受け渡し
+```
+const mapDispatchToProps = dispatch => {
+  return {
+    //関数として実行される
+    onIncrementCounter: () => dispatch({type: 'INCREMENT'}),
+    onDecrementCounter: () => dispatch({type: 'DECREMENT'}),
+    //ここで新しくプロパティvalを定義　これがreducerでactionv.valで状態をうけたわせる
+    onAddCounter: () => dispatch({type: 'ADD', val: 10 }),
+    onSubtractCounter: () => dispatch({type: 'SUBTRACT', val: 15})
+  };
+};
+
+//reducer.js
+if(action.type === 'ADD'){
+  return {
+    //actionによるデータの受け渡し プロパティ名で記述
+    counter: state.counter + action.val
+  }
+}
+if(action.type === 'SUBTRACT'){
+  return {
+    counter: state.counter - action.val
+  }
+}
+return state;
+}
+
+//↑こうすることでdispatchで定義したvalを引き渡すことができるというもの
+
+```
+
+
+"" switchによるreducerの書き方
+```js
+//こうやって書くこともできる
+switch (action.type) {
+  case 'INCREMENT':
+    return {
+      counter: state.counter + 1
+    }
+  case 'DECREMENT':
+    return {
+      counter: state.counter - 1
+    }
+  case 'ADD':
+    return {
+      counter: state.counter + action.val
+    }
+  case 'SUBTRACT':
+    return {
+      counter: state.counter - action.val
+  }
+  default:
+
+}
+return state;
+};
+
+```
